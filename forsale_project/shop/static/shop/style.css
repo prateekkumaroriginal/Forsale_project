@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.card-text{
+    color: black;
+    font-weight: 700;
+}
+
+.card-title{
+    font-weight: 900;
+}
