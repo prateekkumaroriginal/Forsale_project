@@ -12,6 +12,8 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href={% static 'shop/style.css' %}>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -47,7 +49,7 @@
                         </div>
 
                         <a href={% url 'detail' product.id %} class="btn btn-info">View</a>
-                        <a href="" class="btn btn-warning">Add to Cart</a>
+                        <button id={{product.id}} class="btn btn-warning atc">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -78,10 +80,25 @@
         </div>
     </div>
 
-
-
-
-
 </body>
+<script type="text/javascript">
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    }
+    else {
+        var cart = JSON.parse(localStorage.getItem('cart'));
+    }
+    $('.atc').on('click', (event) => {
+        item_id = event.target.id.toString();
+        if (cart[item_id] != undefined) {
+            cart[item_id] += 1;
+        }
+        else {
+            cart[item_id] = 1;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+    });
+
+</script>
 
 </html>
