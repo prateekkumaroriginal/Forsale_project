@@ -11,3 +11,34 @@
 .card-title{
     font-weight: 900;
 }
+
+svg{
+    width: 30px;
+}
+
+.icon-cart{
+    position: relative;
+}
+
+.icon-cart a{
+    padding: 10px 10px 15px;
+}
+
+.icon-cart a:visited{
+    color: black;
+}
+
+.icon-cart span{
+    position: absolute;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #fff;
+    top: -15%;
+    right: 0;
+}
+

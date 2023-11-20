@@ -24,4 +24,5 @@ def detail(request, product_id):
     return render(request, 'shop/product_detail.html', {'product_object': product_object})
 
 
-
+def cart(request):
+    return render(request, 'shop/cart.html')
