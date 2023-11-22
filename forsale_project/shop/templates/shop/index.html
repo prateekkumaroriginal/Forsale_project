@@ -38,27 +38,16 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Features</a>
                                 </li>
-                                <li class="nav-item">
-                                    <button id="cart-link" type="button" class="btn btn-secondary"
-                                        data-bs-toggle="popover" data-bs-trigger="focus"
-                                        data-bs-title="Dismissible popover"
-                                        data-bs-content="It's very engaging. Right?">
-                                        Cart
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
                     <div class="icon-cart">
-                        <a href={% url "cart" %}>
+                        <a href={% url "cartCheckOut" %}>
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
                             </svg>
                         </a>
-                        <span>0</span>
+                        <span id="nr_cart_items" class="badge bg-primary rounded-pill">0</span>
                     </div>
                 </nav>
             </div>
@@ -86,9 +75,7 @@
                 <div class="card">
                     <img src={{product.image}} alt="" class="card-img-top">
                     <div class="card-body">
-                        <div id="prod-name-{{product.id}}" class="card-title">
-                            {{product.title}}
-                        </div>
+                        <div id="prod-name-{{product.id}}" class="card-title">{{product.title}}</div>
                         <div class="card-text">
                             Rs. {{product.price}}
                         </div>
@@ -128,58 +115,28 @@
     <script type="text/javascript">
         
         if (localStorage.getItem('cart') == null) {
-            var cart = {};
-            document.getElementById('cart-link').innerHTML = "Cart (0)"
+            var cart = {
+                'nr_items': 0
+            };
         }
         else {
             var cart = JSON.parse(localStorage.getItem('cart'));
-            document.getElementById('cart-link').innerHTML = "Cart (" + Object.values(cart).reduce((accumulator, currentValue) => {
-                return accumulator + currentValue;
-            }, 0) + ")"
+            document.getElementById('nr_cart_items').innerHTML = cart['nr_items']
         }
         $('.atc').on('click', (event) => {
             item_id = event.target.id.toString();
             if (cart[item_id] != undefined) {
-                cart[item_id] += 1;
+                cart[item_id][0] += 1;
             }
             else {
-                cart[item_id] = 1;
+                cart[item_id] = [1, document.getElementById("prod-name-"+item_id).innerHTML];
             }
+            cart['nr_items'] += 1
             localStorage.setItem('cart', JSON.stringify(cart));
-            let nr_cart_items = Object.values(cart).reduce((accumulator, currentValue) => {
-                return accumulator + currentValue;
-            }, 0);
 
-            document.getElementById('cart-link').innerHTML = "Cart (" + nr_cart_items + ")"
-
-            displayCart(cart)
+            document.getElementById('nr_cart_items').innerHTML = cart['nr_items']
+            
         });
-
-        var cartString = ""
-        
-        function displayCart(cart) {
-            cartString = "";
-            let index = 1
-            for (let item in cart) {
-                cartString += document.getElementById('prod-name-' + item).innerHTML + " --> " + cart[item]
-                index += 1
-            }
-            document.getElementById("cart-link").setAttribute('data-bs-content', cartString);
-        }
-
-        // popover code
-        $(function () {
-            $('[data-bs-toggle="popover"]').popover({
-                html: true,
-                title: '<h4>Your Cart</h4>',
-                content: function () {
-                    return cartString
-                }
-            });
-        });
-
-
-
 
     </script>
 
