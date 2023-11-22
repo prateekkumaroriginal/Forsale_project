@@ -44,7 +44,9 @@
                     <div class="icon-cart">
                         <a href={% url "cartCheckOut" %}>
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
                             </svg>
                         </a>
                         <span id="nr_cart_items" class="badge bg-primary rounded-pill">0</span>
@@ -77,7 +79,7 @@
                     <div class="card-body">
                         <div id="prod-name-{{product.id}}" class="card-title">{{product.title}}</div>
                         <div class="card-text">
-                            Rs. {{product.price}}
+                            Rs. <span id="price-{{product.id}}">{{product.price}}</span>
                         </div>
 
                         <a href={% url 'detail' product.id %} class="btn btn-info">View</a>
@@ -113,7 +115,7 @@
     </div>
 
     <script type="text/javascript">
-        
+
         if (localStorage.getItem('cart') == null) {
             var cart = {
                 'nr_items': 0
@@ -124,18 +126,22 @@
             document.getElementById('nr_cart_items').innerHTML = cart['nr_items']
         }
         $('.atc').on('click', (event) => {
-            item_id = event.target.id.toString();
+            let item_id = event.target.id.toString();
             if (cart[item_id] != undefined) {
                 cart[item_id][0] += 1;
             }
             else {
-                cart[item_id] = [1, document.getElementById("prod-name-"+item_id).innerHTML];
+                cart[item_id] = [
+                    1,
+                    document.getElementById("prod-name-" + item_id).innerHTML,
+                    parseFloat(document.getElementById("price-" + item_id).innerHTML)
+                ];
             }
             cart['nr_items'] += 1
             localStorage.setItem('cart', JSON.stringify(cart));
 
             document.getElementById('nr_cart_items').innerHTML = cart['nr_items']
-            
+
         });
 
     </script>
